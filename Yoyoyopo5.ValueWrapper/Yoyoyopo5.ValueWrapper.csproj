@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <PackageId>Yoyoyopo5.ValueWrapper</PackageId>
+    <Version>1.0.0</Version>
+    <Title>Yoyoyopo5 Value Wrapper</Title>
+    <Authors>Yoyoyopo5</Authors>
+    <Description>A source generator utility for creating semantic wrapper types.</Description>
+    <PackageTags>types;utility;source-generator</PackageTags>
+    <PackageProjectUrl>https://github.com/Yoyoyopo5/ValueWrapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Yoyoyopo5/ValueWrapper</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <!-- <ItemGroup>
+    <PackageReference Include="Yoyoyopo5.ValueWrapper.Analyzer" Version="1.0.0" />
+    <PackageReference Include="Yoyoyopo5.ValueWrapper.Generator" Version="1.0.0" />
+  </ItemGroup> -->
+
+</Project>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>93eabace-989a-4947-b9b2-e190e3fb6e39</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Yoyoyopo5.ValueWrapper.Roslyn.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AccessibilityExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IMethodSymbolExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INamedTypeSymbolExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Polyfills.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RecordImmutableArray.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeKindExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueWrapperConstants.cs" />
+  </ItemGroup>
+</Project>
