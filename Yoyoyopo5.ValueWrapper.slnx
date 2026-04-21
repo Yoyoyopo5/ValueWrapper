@@ -1,11 +1,11 @@
 <Solution>
-  <Project Path="Yoyoyopo5.ValueWrapper.Analyzer.Tests/Yoyoyopo5.ValueWrapper.Analyzer.Tests.csproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Analyzer/Yoyoyopo5.ValueWrapper.Analyzer.csproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Benchmarks/Yoyoyopo5.ValueWrapper.Benchmarks.csproj" Id="5405b7a8-cbe4-4368-acaf-d769ce55872e" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Generator.Tests/Yoyoyopo5.ValueWrapper.Generator.Tests.csproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Generator/Yoyoyopo5.ValueWrapper.Generator.csproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Roslyn.Shared/Yoyoyopo5.ValueWrapper.Roslyn.Shared.shproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Tests.Shared/Yoyoyopo5.ValueWrapper.Tests.Shared.shproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper.Tests.Unit/Yoyoyopo5.ValueWrapper.Tests.Unit.csproj" />
-  <Project Path="Yoyoyopo5.ValueWrapper/Yoyoyopo5.ValueWrapper.csproj" />
+  <Project Path="src/Yoyoyopo5.ValueWrapper/Yoyoyopo5.ValueWrapper.csproj" />
+  <Project Path="src/Yoyoyopo5.ValueWrapper.Analyzer/Yoyoyopo5.ValueWrapper.Analyzer.csproj" />
+  <Project Path="src/Yoyoyopo5.ValueWrapper.Generator/Yoyoyopo5.ValueWrapper.Generator.csproj" />
+  <Project Path="src/Yoyoyopo5.ValueWrapper.Roslyn.Shared/Yoyoyopo5.ValueWrapper.Roslyn.Shared.shproj" />
+  <Project Path="tests/Yoyoyopo5.ValueWrapper.Analyzer.Tests/Yoyoyopo5.ValueWrapper.Analyzer.Tests.csproj" />
+  <Project Path="tests/Yoyoyopo5.ValueWrapper.Generator.Tests/Yoyoyopo5.ValueWrapper.Generator.Tests.csproj" />
+  <Project Path="tests/Yoyoyopo5.ValueWrapper.Tests.Shared/Yoyoyopo5.ValueWrapper.Tests.Shared.shproj" />
+  <Project Path="tests/Yoyoyopo5.ValueWrapper.Tests.Unit/Yoyoyopo5.ValueWrapper.Tests.Unit.csproj" />
+  <Project Path="benchmarks/Yoyoyopo5.ValueWrapper.Benchmarks/Yoyoyopo5.ValueWrapper.Benchmarks.csproj" Id="5405b7a8-cbe4-4368-acaf-d769ce55872e" />
 </Solution>

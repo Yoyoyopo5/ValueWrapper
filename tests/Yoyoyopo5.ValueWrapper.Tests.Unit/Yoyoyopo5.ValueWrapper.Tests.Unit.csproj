@@ -21,15 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yoyoyopo5.ValueWrapper\Yoyoyopo5.ValueWrapper.csproj" />
+    <ProjectReference Include="..\..\src\Yoyoyopo5.ValueWrapper\Yoyoyopo5.ValueWrapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yoyoyopo5.ValueWrapper.Generator\Yoyoyopo5.ValueWrapper.Generator.csproj"
+    <ProjectReference Include="..\..\src\Yoyoyopo5.ValueWrapper.Generator\Yoyoyopo5.ValueWrapper.Generator.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"
                       />
-    <ProjectReference Include="..\Yoyoyopo5.ValueWrapper.Analyzer\Yoyoyopo5.ValueWrapper.Analyzer.csproj"
+    <ProjectReference Include="..\..\src\Yoyoyopo5.ValueWrapper.Analyzer\Yoyoyopo5.ValueWrapper.Analyzer.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"
                       />
