@@ -23,5 +23,5 @@ public abstract class ToStringBenchmarks<TWrapper, TWrapped>
     public void WrapperToString() => Wrapper.ToString();
 
     [Benchmark(Baseline = true)]
-    public string PrimitiveToString() => Primitive.ToString();
+    public string? PrimitiveToString() => Primitive?.ToString();
 }
