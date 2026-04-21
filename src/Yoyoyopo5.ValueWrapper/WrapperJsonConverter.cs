@@ -14,7 +14,7 @@ public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
         => Unsafe.As<T, TWrapped>(ref value);
     private static T AsWrapped<T>(ref TWrapped value)
         => Unsafe.As<TWrapped, T>(ref value);
-
+    /// <inheritdoc/>
     public override TWrapper? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.Null)
@@ -133,7 +133,7 @@ public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
             _ => default,
         };
     }
-
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TWrapper value, JsonSerializerOptions options)
     {
         TWrapped wrappedValue = value.Value;
