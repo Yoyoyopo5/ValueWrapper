@@ -16,6 +16,7 @@ internal static class INamedTypeSymbolExtensions
         => new()
         {
             Namespace = typeSymbol.ContainingNamespace.ToDisplayString(),
+            IsGlobalNamespace = typeSymbol.ContainingNamespace.IsGlobalNamespace,
             Name = typeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
             IsPartial = typeSymbol.IsPartial(),
             IsRecord = typeSymbol.IsRecord,

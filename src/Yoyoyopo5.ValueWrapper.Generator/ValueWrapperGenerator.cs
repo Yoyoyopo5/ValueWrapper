@@ -37,7 +37,7 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             if (w is null || !w.ShouldRender)
                 return;
             ctx.CancellationToken.ThrowIfCancellationRequested();
-            ctx.AddSource($"{w!.Namespace}_{string.Join("_", w!.ParentTypes.Reverse().Select(p => p.Name))}{(w.ParentTypes.Any() ? "_" : "")}{w!.Name}_Wrapper.g.cs", ValueWrapperTemplate.RenderPartialValueWrapper(w));
+            ctx.AddSource($"{(w!.IsGlobalNamespace ? string.Empty : w!.Namespace)}_{string.Join("_", w!.ParentTypes.Reverse().Select(p => p.Name))}{(w.ParentTypes.Any() ? "_" : "")}{w!.Name}_Wrapper.g.cs", ValueWrapperTemplate.RenderPartialValueWrapper(w));
         });
     }
 }

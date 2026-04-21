@@ -8,6 +8,7 @@ namespace Yoyoyopo5.ValueWrapper.Generator;
 internal record ValueWrapperDefinition
 {
     public required string Namespace { get; init; }
+    public required bool IsGlobalNamespace { get; init; }
     public required string Name { get; init; }
     public required string PartialDeclaration { get; init; }
     public required bool IsPartial { get; init; }

@@ -13,7 +13,7 @@ internal static class TemplateExtensions
         => wrapperTemplate.Render(
             new
             {
-                wrapper.Namespace,
+                Namespace = wrapper.IsGlobalNamespace ? null : wrapper.Namespace,
                 TypeName = wrapper.Name,
                 Parents = wrapper.ParentTypes.Reverse().Select(pt => pt.PartialDeclaration).ToArray(),
                 WrappedTypeName = wrapper.WrappedType.FullyQualifiedName,
