@@ -17,7 +17,6 @@
     <PackageProjectUrl>https://github.com/Yoyoyopo5/ValueWrapper</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Yoyoyopo5/ValueWrapper</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
