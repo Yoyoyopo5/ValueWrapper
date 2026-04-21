@@ -11,7 +11,7 @@ public record TestCaseWrapper<T> : IXunitSerializable
     public void Serialize(IXunitSerializationInfo info)
         => TestCase.Serialize(info);
     public void Deserialize(IXunitSerializationInfo info)
-        => T.Deserialize(info);
+        => TestCase = T.Deserialize(info);
     public override string ToString() => TestCase?.ToString() ?? "Unknown";
 }
 
