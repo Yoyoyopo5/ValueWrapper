@@ -5,9 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
 
+  <PropertyGroup Label="Nuget">
     <PackageId>Yoyoyopo5.ValueWrapper</PackageId>
-    <Version>1.0.0</Version>
     <Title>Yoyoyopo5 Value Wrapper</Title>
     <Authors>Yoyoyopo5</Authors>
     <Description>A source generator utility for creating semantic wrapper types.</Description>
@@ -22,12 +24,42 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
-  <!-- <ItemGroup>
-    <PackageReference Include="Yoyoyopo5.ValueWrapper.Analyzer" Version="1.0.0" />
-    <PackageReference Include="Yoyoyopo5.ValueWrapper.Generator" Version="1.0.0" />
-  </ItemGroup> -->
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../icon.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <Target Name="_AddAnalyzersToPackage">
+      <ItemGroup>
+      <!-- Pack Analyzer and Generator -->
+      <TfmSpecificPackageFile Include="../Yoyoyopo5.ValueWrapper.Analyzer/bin/$(Configuration)/netstandard2.0/Yoyoyopo5.ValueWrapper.Analyzer.dll" 
+                              Pack="true"
+                              PackagePath="analyzers/roslyn4.8/dotnet/cs"
+                              Condition=" '$(TargetFramework)' == 'net8.0' "
+                              />
+      <TfmSpecificPackageFile Include="../Yoyoyopo5.ValueWrapper.Generator/bin/$(Configuration)/netstandard2.0/Yoyoyopo5.ValueWrapper.Generator.dll" 
+                              Pack="true"
+                              PackagePath="analyzers/roslyn4.8/dotnet/cs"
+                              Condition=" '$(TargetFramework)' == 'net8.0' "
+                              />
+      <!-- Pack Scriban (Condition ensures it is only packed once instead of for each target framework) -->
+      <TfmSpecificPackageFile Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll"
+                              Pack="true"
+                              PackagePath="analyzers/roslyn4.8/dotnet/cs"
+                              Condition=" '$(TargetFramework)' == 'net8.0' "
+                              />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Scriban" Version="7.0.6" PrivateAssets="all" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Yoyoyopo5.ValueWrapper.Analyzer/Yoyoyopo5.ValueWrapper.Analyzer.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../Yoyoyopo5.ValueWrapper.Generator/Yoyoyopo5.ValueWrapper.Generator.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
 
 </Project>

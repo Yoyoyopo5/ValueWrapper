@@ -7,23 +7,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-
-    <PackageId>Yoyoyopo5.ValueWrapper.Analyzer</PackageId>
-    <Version>1.0.0</Version>
-    <Title>Yoyoyopo5 Value Wrapper Analyzer</Title>
-    <Authors>Yoyoyopo5</Authors>
-    <Description>Roslyn Analyzer for Yoyoyopo5.ValueWrapper</Description>
-    <PackageTags>analyzer</PackageTags>
-    <PackageProjectUrl>https://github.com/Yoyoyopo5/ValueWrapper</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Yoyoyopo5/ValueWrapper</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
