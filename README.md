@@ -249,7 +249,7 @@ public partial record Kilometers;
 [Wrapper<decimal>]
 public partial record Miles;
 
-public static EmailExtensions
+public static KilometersExtensions
 {
     public static Miles ConvertToMiles(this Kilometers kilometers) { }
 }
