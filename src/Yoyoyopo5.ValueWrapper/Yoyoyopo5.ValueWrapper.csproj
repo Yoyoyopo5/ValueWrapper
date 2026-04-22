@@ -54,7 +54,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="7.0.6" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Scriban" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>
