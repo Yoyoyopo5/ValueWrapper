@@ -13,7 +13,8 @@ public sealed class ValueWrapperAnalyzer : DiagnosticAnalyzer
         ValueWrapperDiagnostics.PartialModifierRequiredWarning,
         ValueWrapperDiagnostics.PartialParentTypesRequiredWarning,
         ValueWrapperDiagnostics.JsonConstructionMethodMissingWarning,
-        ValueWrapperDiagnostics.WronglyTypedValueProperty
+        ValueWrapperDiagnostics.WronglyTypedValueProperty,
+        ValueWrapperDiagnostics.StaticWrapperTypeWarning
     );
 
     public override void Initialize(AnalysisContext context)
@@ -37,6 +38,7 @@ public sealed class ValueWrapperAnalyzer : DiagnosticAnalyzer
                 wrapper
                     .AnalyzePartial(context.ReportDiagnostic, ct)
                     .AnalyzePartialParents(context.ReportDiagnostic, ct)
+                    .AnalyzeStaticType(context.ReportDiagnostic, ct)
                     .AnalyzeValueProperty(context.ReportDiagnostic, ct)
                     .AnalyzeJsonConstruction(context.ReportDiagnostic, ct);
             },

@@ -42,4 +42,13 @@ internal static class ValueWrapperDiagnostics
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true
         );
+
+    public static readonly DiagnosticDescriptor StaticWrapperTypeWarning = new(
+        id: "VWG0005",
+        title: "Wrapper types cannot be static",
+        messageFormat: "'{0}' must be non-static to enable wrapper generation",
+        category: "ValueWrapper",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true
+        );
 }

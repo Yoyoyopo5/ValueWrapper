@@ -9,6 +9,18 @@ namespace Yoyoyopo5.ValueWrapper.Analyzer;
 
 internal static class ValueWrapperSymbolAnalyzerExtensions
 {
+    public static ValueWrapperSymbol AnalyzeStaticType(this ValueWrapperSymbol wrapperSymbol, Action<Diagnostic> report, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+        if (wrapperSymbol.TypeSymbol.IsStatic)
+            report(Diagnostic.Create(
+                ValueWrapperDiagnostics.StaticWrapperTypeWarning,
+                wrapperSymbol.TypeSymbol.Locations.FirstOrDefault(),
+                wrapperSymbol.TypeSymbol.Name
+                ));
+        return wrapperSymbol;
+    }
+
     public static ValueWrapperSymbol AnalyzePartial(this ValueWrapperSymbol wrapperSymbol, Action<Diagnostic> report, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
