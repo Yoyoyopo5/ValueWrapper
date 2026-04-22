@@ -4,7 +4,7 @@ using Yoyoyopo5.ValueWrapper.Tests.Shared;
 
 namespace Yoyoyopo5.ValueWrapper.Generator.Tests;
 
-public class Test_ValueWrapperGenerator
+public class Test_ValueWrapperGenerator_Generation
 {
     private const string FAKE_CONVERTER = """
         using System;
