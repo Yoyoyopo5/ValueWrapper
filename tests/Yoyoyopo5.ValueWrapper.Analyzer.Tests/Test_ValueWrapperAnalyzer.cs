@@ -129,6 +129,17 @@ public class Test_ValueWrapperAnalyzer
                     => new() { Amount = int.Parse(value), Value = value };
             }
             """
+        },
+        new AnalyzerTestCase()
+        {
+            Name = "Warns_ForStaticTypeWithWrapperAttribute",
+            Input = """
+            namespace TestNamespace;
+            using Yoyoyopo5.ValueWrapper;
+
+            [Wrapper<string>]
+            public static partial class {|VWG0003:{|VWG0005:Warns_ForStaticTypeWithWrapperAttribute|}|};
+            """
         }
     ];
 

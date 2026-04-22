@@ -309,6 +309,19 @@ public class Test_ValueWrapperGenerator
 
             """,
             ExpectedOutputFilePath = $"TestNamespace_AddMembersToWrappedNullableValueType{EXPECTED_FILE_PATH_SUFFIX}"
+        },
+        new SourceGeneratorTestCase()
+        {
+            Name = "SkipsGeneratingStaticWrapperType",
+            Input = """
+            namespace TestNamespace;
+            using Yoyoyopo5.ValueWrapper;
+
+            [Wrapper<string>]
+            public static partial class SkipsGeneratingStaticWrapperType;
+            """,
+            ExpectedOutput = null,
+            ExpectedOutputFilePath = null
         }
     ];
     public static TheoryData<TestCaseWrapper<SourceGeneratorTestCase>> TestCases
