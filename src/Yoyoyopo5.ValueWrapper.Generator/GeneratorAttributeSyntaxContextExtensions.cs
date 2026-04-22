@@ -12,7 +12,7 @@ internal static class GeneratorAttributeSyntaxContextExtensions
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-        if (context.TargetSymbol is not INamedTypeSymbol wrapperTypeSymbol)
+        if (context.TargetSymbol is not INamedTypeSymbol { IsStatic: false } wrapperTypeSymbol)
             return null;
         ct.ThrowIfCancellationRequested();
         if (context.Attributes.First().AttributeClass?.TypeArguments.FirstOrDefault() is not INamedTypeSymbol wrappedTypeSymbol)
