@@ -36,10 +36,11 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             .Where(ValueWrapperDefinitionExtensions.ShouldRender)
             .WithTrackingName(TRACKING_NAME); // Enforces non-null wrapper definition
 
-        context.RegisterSourceOutput(provider, (ctx, w) =>
+        context.RegisterSourceOutput(provider, static (ctx, w) =>
         {
             ctx.CancellationToken.ThrowIfCancellationRequested();
             ctx.AddSource(w!.ToGeneratedSourceFilename("Wrapper.g.cs"), ValueWrapperTemplate.RenderPartialValueWrapper(w!));
+            //ctx.AddSource(w!.ToGeneratedSourceFilename("Wrapper.g.cs"), "// Hello");
         });
     }
 }
