@@ -14,18 +14,26 @@ public class GeneratorBenchmarks
         );
 
     private GeneratorDriver _generatorDriver = default!;
-    private GeneratorDriver _secondRunGeneratorDriver = default!;
-    private GeneratorDriver _vanillaDriver = default!;
+    private GeneratorDriver _ranGeneratorDriver = default!;
     private Compilation _compilation = default!;
-    private Compilation _afterFirstRunCompilation = default!;
-    private Compilation _incrementallyModifiedCompilation = default!;
-    private Compilation _addedWrapperCompilation = default!;
+    private Compilation _modifiedCompilation = default!;
 
     const string SOURCE_INPUT = """
         namespace Benchmarks;
         using Yoyoyopo5.ValueWrapper;
 
         public partial class Container
+        {
+            [Wrapper<int>]
+            public readonly partial record struct BenchmarkWrapper;
+        }
+        """;
+
+    const string MODIFIED_SOURCE_INPUT = """
+        namespace Benchmarks;
+        using Yoyoyopo5.ValueWrapper;
+
+        public partial class Container // Added a comment.
         {
             [Wrapper<int>]
             public readonly partial record struct BenchmarkWrapper;
@@ -44,35 +52,36 @@ public class GeneratorBenchmarks
                 ]
             );
 
+        _modifiedCompilation = CSharpCompilation.Create(
+            "Benchmark",
+            [CSharpSyntaxTree.ParseText(MODIFIED_SOURCE_INPUT, path: "BenchmarkWrapper.cs")],
+            [
+                ..Basic.Reference.Assemblies.Net100.References.All.AsEnumerable<MetadataReference>(),
+                MetadataReference.CreateFromFile(typeof(WrapperAttribute<>).Assembly.Location)
+                ]
+            );
+
         _generatorDriver = CSharpGeneratorDriver.Create(
             generators: [new ValueWrapperGenerator().AsSourceGenerator()],
             driverOptions: _driverOptions
             );
 
-        _secondRunGeneratorDriver = _generatorDriver.RunGeneratorsAndUpdateCompilation(_compilation, out _afterFirstRunCompilation, out _);
-
-        _incrementallyModifiedCompilation = _afterFirstRunCompilation.AddSyntaxTrees(
-            CSharpSyntaxTree.ParseText("// Nothing here", path: "Comment.cs")
-            );
-
-        _addedWrapperCompilation = _afterFirstRunCompilation.AddSyntaxTrees(
-            CSharpSyntaxTree.ParseText("""
-                namespace Benchmarks;
-                using Yoyoyopo5.ValueWrapper;
-                [Wrapper<int>]
-                public readonly partial record struct BenchmarkWrapper2;
-                """,
-                path: "BenchmarkWrapper2.cs")
-            );
-
-        _vanillaDriver = CSharpGeneratorDriver.Create(
-            generators: [],
-            driverOptions: _driverOptions
-            );
+        _ranGeneratorDriver = _generatorDriver.RunGenerators(_compilation);
 
         if (GetDryRunError() is string error)
             throw new InvalidOperationException(error);
+
+        EnsureCached();
     }
+
+    public bool EnsureCached()
+        => _ranGeneratorDriver.RunGenerators(_modifiedCompilation).GetRunResult()
+            .Results
+            .Single()
+            .TrackedSteps[ValueWrapperGenerator.TRACKING_NAME]
+            .SelectMany(s => s.Outputs)
+            .Select(o => o.Reason)
+            .Single() == IncrementalStepRunReason.Cached ? true : throw new InvalidOperationException("Second run was not cached!");
 
     public string? GetDryRunError()
         => _generatorDriver.RunGenerators(_compilation).GetRunResult() switch
@@ -82,19 +91,11 @@ public class GeneratorBenchmarks
             _ => null
         };
 
-    [Benchmark(Baseline = true)]
-    public void NoGenerator()
-        => _vanillaDriver.RunGenerators(_compilation);
-
     [Benchmark]
     public void RunGenerator()
         => _generatorDriver.RunGenerators(_compilation);
 
     [Benchmark]
-    public void RunGeneratorAgain()
-        => _secondRunGeneratorDriver.RunGenerators(_addedWrapperCompilation);
-
-    [Benchmark]
-    public void RunGeneratorIncrementalChange()
-        => _secondRunGeneratorDriver.RunGenerators(_incrementallyModifiedCompilation);
+    public void RunGeneratorCached()
+        => _ranGeneratorDriver.RunGenerators(_modifiedCompilation);
 }
