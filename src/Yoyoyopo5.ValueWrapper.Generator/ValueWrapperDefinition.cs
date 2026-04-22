@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 using System.Linq;
 using Yoyoyopo5.ValueWrapper.Generator.ValueWrapperComponents;
 using Yoyoyopo5.ValueWrapper.Roslyn.Shared;
@@ -27,6 +28,12 @@ internal record ValueWrapperDefinition
 
 internal static class ValueWrapperDefinitionExtensions
 {
+    public static bool ShouldRender(this ValueWrapperDefinition? wrapper)
+        => wrapper is not null
+            && (wrapper.WrapperValueProperty is null or { IsOfWrappedType: true })
+            && wrapper.IsPartial
+            && wrapper.ParentTypes.All(p => p.IsPartial);
+
     extension(ValueWrapperDefinition wrapper)
     {
         public bool ShouldAddValueProperty => wrapper switch
@@ -34,11 +41,6 @@ internal static class ValueWrapperDefinitionExtensions
             { IsRecord: true, WrapperConstructor: not null } or { WrapperValueProperty: not null } => false,
             _ => true
         };
-
-        public bool ShouldRender => wrapper is not null
-            && (wrapper.WrapperValueProperty is null or { IsOfWrappedType: true })
-            && wrapper.IsPartial
-            && wrapper.ParentTypes.All(p => p.IsPartial);
 
         public bool CanInitialize =>
             !wrapper.HasOtherRequiredProperties
@@ -52,5 +54,10 @@ internal static class ValueWrapperDefinitionExtensions
             { CanInitialize: true } => $$"""new() { {{(wrapper.WrapperValueProperty.HasValue ? wrapper.WrapperValueProperty.Value.Name : "Value")}} = value }""",
             _ => null
         };
+
+        public string ToGeneratedSourceFilename(string filenameSuffix = "Wrapper.g.cs")
+            => string.Join("_", [wrapper.GeneratedFilepathNamespace, .. wrapper.GeneratedFilepathParentNames, wrapper.Name, filenameSuffix]);
+        private string GeneratedFilepathNamespace => wrapper.IsGlobalNamespace ? string.Empty : wrapper.Namespace;
+        private IEnumerable<string> GeneratedFilepathParentNames => wrapper.ParentTypes.Reverse().Select(p => p.Name);
     }
 }

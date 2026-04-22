@@ -30,14 +30,13 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             ValueWrapperConstants.WRAPPER_ATTRIBUTE_NAME,
             predicate: static (node, _) => node is TypeDeclarationSyntax,
             transform: GeneratorAttributeSyntaxContextExtensions.ToValueWrapperDefinition
-            );
+            )
+            .Where(ValueWrapperDefinitionExtensions.ShouldRender); // Enforces non-null wrapper definition
 
         context.RegisterSourceOutput(provider, (ctx, w) =>
         {
-            if (w is null || !w.ShouldRender)
-                return;
             ctx.CancellationToken.ThrowIfCancellationRequested();
-            ctx.AddSource($"{(w!.IsGlobalNamespace ? string.Empty : w!.Namespace)}_{string.Join("_", w!.ParentTypes.Reverse().Select(p => p.Name))}{(w.ParentTypes.Any() ? "_" : "")}{w!.Name}_Wrapper.g.cs", ValueWrapperTemplate.RenderPartialValueWrapper(w));
+            ctx.AddSource(w!.ToGeneratedSourceFilename("Wrapper.g.cs"), ValueWrapperTemplate.RenderPartialValueWrapper(w!));
         });
     }
 }
