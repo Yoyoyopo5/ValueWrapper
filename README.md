@@ -255,7 +255,7 @@ public static KilometersExtensions
 }
 ```
 
-## Benchmarks
+## Benchmarks (v1.0.1)
 
 ### ToString Passthrough
 
@@ -304,3 +304,10 @@ Non-built-in wrapped types incur a penalty.
 |----------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
 | WrapperRoundTripJson   | 128.7 ns | 1.18 ns | 1.04 ns |  0.96 |    0.01 | 0.0043 |      72 B |        1.00 |
 | PrimitiveRoundTripJson | 134.6 ns | 1.99 ns | 1.86 ns |  1.00 |    0.02 | 0.0043 |      72 B |        1.00 |
+
+### Source Generator
+
+| Method             | Mean     | Error    | StdDev   | Gen0   | Gen1   | Allocated |
+|------------------- |---------:|---------:|---------:|-------:|-------:|----------:|
+| RunGenerator       | 76.26 us | 0.734 us | 0.613 us | 4.8828 | 0.4883 |  81.71 KB |
+| RunGeneratorCached | 29.58 us | 0.115 us | 0.090 us | 1.3123 | 0.0305 |  21.85 KB |
