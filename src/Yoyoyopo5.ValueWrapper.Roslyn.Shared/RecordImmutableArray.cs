@@ -9,7 +9,7 @@ namespace Yoyoyopo5.ValueWrapper.Roslyn.Shared;
 /// <summary>
 /// Equal maps to SequenceEqual on the underlying <see cref="ImmutableArray"/>.
 /// </summary>
-public class RecordImmutableArray<T>(ImmutableArray<T> array) : IEquatable<RecordImmutableArray<T>>, IReadOnlyList<T>
+public readonly struct RecordImmutableArray<T>(ImmutableArray<T> array) : IEquatable<RecordImmutableArray<T>>, IReadOnlyList<T>
 {
     public RecordImmutableArray() : this(ImmutableArray<T>.Empty) { }
     private readonly ImmutableArray<T> _array = array;
