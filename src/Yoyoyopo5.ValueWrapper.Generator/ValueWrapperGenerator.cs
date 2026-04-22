@@ -40,7 +40,6 @@ public class ValueWrapperGenerator : IIncrementalGenerator
         {
             ctx.CancellationToken.ThrowIfCancellationRequested();
             ctx.AddSource(w!.ToGeneratedSourceFilename("Wrapper.g.cs"), ValueWrapperTemplate.RenderPartialValueWrapper(w!));
-            //ctx.AddSource(w!.ToGeneratedSourceFilename("Wrapper.g.cs"), "// Hello");
         });
     }
 }
