@@ -11,6 +11,8 @@ namespace Yoyoyopo5.ValueWrapper.Generator;
 [Generator]
 public class ValueWrapperGenerator : IIncrementalGenerator
 {
+    public const string TRACKING_NAME = "ValueWrapperDefinitionStep";
+
     private readonly static Lazy<Template> _template = new(() =>
     {
         if (typeof(ValueWrapperGenerator).Assembly.GetManifestResourceStream(ValueWrapperConstants.SCRIBAN_TEMPLATE_FILENAME) is not Stream templateStream)
@@ -31,7 +33,8 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             predicate: static (node, _) => node is TypeDeclarationSyntax,
             transform: GeneratorAttributeSyntaxContextExtensions.ToValueWrapperDefinition
             )
-            .Where(ValueWrapperDefinitionExtensions.ShouldRender); // Enforces non-null wrapper definition
+            .Where(ValueWrapperDefinitionExtensions.ShouldRender)
+            .WithTrackingName(TRACKING_NAME); // Enforces non-null wrapper definition
 
         context.RegisterSourceOutput(provider, (ctx, w) =>
         {
