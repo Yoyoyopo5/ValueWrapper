@@ -21,7 +21,7 @@ public readonly record struct ImplicitOperatorInfo
     /// </returns>
     public static ImplicitOperatorInfo? FromTypeSymbol(
         INamedTypeSymbol symbol,
-        INamedTypeSymbol wrappedTypeSymbol,
+        ITypeSymbol wrappedTypeSymbol,
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
