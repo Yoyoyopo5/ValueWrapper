@@ -10,9 +10,10 @@ public class Test_ValueWrapperGenerator_Generation
         using System;
         using System.Text.Json;
         using System.Text.Json.Serialization;
+        using System.ComponentModel;
 
         namespace TestNamespace;
-        public class FakeConverter<T> : JsonConverter<T>
+        public class FakeJsonConverter<T> : JsonConverter<T>
         {
             public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
@@ -23,6 +24,8 @@ public class Test_ValueWrapperGenerator_Generation
                 throw new NotImplementedException();
             }
         }
+
+        public class FakeTypeConverter : TypeConverter { }
 
         """;
 
@@ -45,6 +48,7 @@ public class Test_ValueWrapperGenerator_Generation
             namespace TestNamespace;
 
             [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<AddsAllMembersToEmptyType, global::System.String>))]
+            [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<AddsAllMembersToEmptyType, global::System.String>))]
             public readonly partial record struct AddsAllMembersToEmptyType
                 : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.String, AddsAllMembersToEmptyType>
             {
@@ -63,9 +67,11 @@ public class Test_ValueWrapperGenerator_Generation
             Input = """
             using Yoyoyopo5.ValueWrapper;
             using System.Text.Json.Serialization;
+            using System.ComponentModel;
             namespace TestNamespace;
             [Wrapper<string>]
-            [JsonConverter(typeof(FakeConverter<string>))]
+            [JsonConverter(typeof(FakeJsonConverter<string>))]
+            [TypeConverter(typeof(FakeTypeConverter))]
             public readonly partial record struct AddsCreateMethodToFullType
             {
                 public required string Value { get; init; }
@@ -126,6 +132,7 @@ public class Test_ValueWrapperGenerator_Generation
                 public partial class ContainerTwo
                 {
                     [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<GeneratesNestedWrapperType, global::System.Int32>))]
+                    [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<GeneratesNestedWrapperType, global::System.Int32>))]
                     private partial class GeneratesNestedWrapperType
                         : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.Int32, GeneratesNestedWrapperType>
                     {
@@ -156,6 +163,7 @@ public class Test_ValueWrapperGenerator_Generation
             namespace TestNamespace;
             
             [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<SkipsValuePropertyOnRecordWithPrimaryConstructor, global::System.Double>))]
+            [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<SkipsValuePropertyOnRecordWithPrimaryConstructor, global::System.Double>))]
             public partial record class SkipsValuePropertyOnRecordWithPrimaryConstructor
                 : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.Double, SkipsValuePropertyOnRecordWithPrimaryConstructor>
             {
@@ -196,12 +204,12 @@ public class Test_ValueWrapperGenerator_Generation
         },
         new SourceGeneratorTestCase()
         {
-            Name = "SkipsAddingJsonConverterWithNonValueRequiredProps",
+            Name = "SkipsAddingConvertersWithNonValueRequiredProps",
             Input = """
             namespace TestNamespace;
             using Yoyoyopo5.ValueWrapper;
             [Wrapper<string>]
-            public partial record SkipsAddingJsonConverterWithNonValueRequiredProps
+            public partial record SkipsAddingConvertersWithNonValueRequiredProps
             {
                 public required int Amount { get; init; }
             }
@@ -212,24 +220,24 @@ public class Test_ValueWrapperGenerator_Generation
             
             namespace TestNamespace;
             
-            public partial record class SkipsAddingJsonConverterWithNonValueRequiredProps
+            public partial record class SkipsAddingConvertersWithNonValueRequiredProps
             {
                 public required global::System.String Value { get; init; }
-                public static implicit operator global::System.String(SkipsAddingJsonConverterWithNonValueRequiredProps wrapper) => wrapper.Value;
+                public static implicit operator global::System.String(SkipsAddingConvertersWithNonValueRequiredProps wrapper) => wrapper.Value;
                 public override global::System.String ToString() => Value.ToString();
             }
 
             """,
-            ExpectedOutputFilePath = $"TestNamespace_SkipsAddingJsonConverterWithNonValueRequiredProps{EXPECTED_FILE_PATH_SUFFIX}"
+            ExpectedOutputFilePath = $"TestNamespace_SkipsAddingConvertersWithNonValueRequiredProps{EXPECTED_FILE_PATH_SUFFIX}"
         },
         new SourceGeneratorTestCase()
         {
-            Name = "SkipsAddingJsonConverterOnRecordWithNonValuePrimaryConstructorArgs",
+            Name = "SkipsAddingConvertersOnRecordWithNonValuePrimaryConstructorArgs",
             Input = """
             namespace TestNamespace;
             using Yoyoyopo5.ValueWrapper;
             [Wrapper<string>]
-            public partial record SkipsAddingJsonConverterOnRecordWithNonValuePrimaryConstructorArgs(int Amount);
+            public partial record SkipsAddingConvertersOnRecordWithNonValuePrimaryConstructorArgs(int Amount);
             """,
             ExpectedOutput = """
             // <auto-generated/>
@@ -237,28 +245,28 @@ public class Test_ValueWrapperGenerator_Generation
             
             namespace TestNamespace;
             
-            public partial record class SkipsAddingJsonConverterOnRecordWithNonValuePrimaryConstructorArgs
+            public partial record class SkipsAddingConvertersOnRecordWithNonValuePrimaryConstructorArgs
             {
                 public required global::System.String Value { get; init; }
-                public static implicit operator global::System.String(SkipsAddingJsonConverterOnRecordWithNonValuePrimaryConstructorArgs wrapper) => wrapper.Value;
+                public static implicit operator global::System.String(SkipsAddingConvertersOnRecordWithNonValuePrimaryConstructorArgs wrapper) => wrapper.Value;
                 public override global::System.String ToString() => Value.ToString();
             }
 
             """,
-            ExpectedOutputFilePath = $"TestNamespace_SkipsAddingJsonConverterOnRecordWithNonValuePrimaryConstructorArgs{EXPECTED_FILE_PATH_SUFFIX}"
+            ExpectedOutputFilePath = $"TestNamespace_SkipsAddingConvertersOnRecordWithNonValuePrimaryConstructorArgs{EXPECTED_FILE_PATH_SUFFIX}"
         },
         new SourceGeneratorTestCase()
         {
-            Name = "AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod",
+            Name = "AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod",
             Input = """
             namespace TestNamespace;
             using Yoyoyopo5.ValueWrapper;
             [Wrapper<string>]
-            public partial record AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod(int OtherAmount)
+            public partial record AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod(int OtherAmount)
             {
                 public string Value => (Amount + OtherAmount).ToString();
                 public required int Amount { get; init; }
-                public static AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod Create(string amount)
+                public static AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod Create(string amount)
                     => new(0) { Amount = int.Parse(amount) };
             }
 
@@ -269,17 +277,18 @@ public class Test_ValueWrapperGenerator_Generation
             
             namespace TestNamespace;
             
-            [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod, global::System.String>))]
-            public partial record class AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod
-                : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.String, AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod>
+            [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod, global::System.String>))]
+            [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod, global::System.String>))]
+            public partial record class AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod
+                : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.String, AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod>
             {
-                public static implicit operator global::System.String(AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod wrapper) => wrapper.Value;
+                public static implicit operator global::System.String(AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod wrapper) => wrapper.Value;
                 public override global::System.String ToString() => Value.ToString();
-                static AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.String, AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod>.Create(global::System.String value) => Create(value);
+                static AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.String, AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod>.Create(global::System.String value) => Create(value);
             }
 
             """,
-            ExpectedOutputFilePath = $"TestNamespace_AddsJsonConverterWithNonValueRequiredPropsAndSuitableStaticCreateMethod{EXPECTED_FILE_PATH_SUFFIX}"
+            ExpectedOutputFilePath = $"TestNamespace_AddsConvertersWithNonValueRequiredPropsAndSuitableStaticCreateMethod{EXPECTED_FILE_PATH_SUFFIX}"
         },
         new SourceGeneratorTestCase()
         {
@@ -298,6 +307,7 @@ public class Test_ValueWrapperGenerator_Generation
             namespace TestNamespace;
             
             [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<AddMembersToWrappedNullableValueType, global::System.Int32?>))]
+            [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<AddMembersToWrappedNullableValueType, global::System.Int32?>))]
             public readonly partial record struct AddMembersToWrappedNullableValueType
                 : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.Int32?, AddMembersToWrappedNullableValueType>
             {
@@ -322,6 +332,39 @@ public class Test_ValueWrapperGenerator_Generation
             """,
             ExpectedOutput = null,
             ExpectedOutputFilePath = null
+        },
+        new SourceGeneratorTestCase()
+        {
+            Name = "AddsConvertersToFullWrapper",
+            Input = """
+            namespace TestNamespace;
+            using Yoyoyopo5.ValueWrapper;
+
+            [Wrapper<int>]
+            public partial class AddsConvertersToFullWrapper
+            {
+                public required int Value { get; init; }
+                public override string ToString() => Value.ToString();
+                public static implicit operator int(AddsConvertersToFullWrapper wrapper) => wrapper.Value;
+                public static AddsConvertersToFullWrapper Create(int value) => new() { Value = value };
+            }
+            """,
+            ExpectedOutput = """
+            // <auto-generated/>
+            #nullable enable
+            
+            namespace TestNamespace;
+            
+            [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperJsonConverter<AddsConvertersToFullWrapper, global::System.Int32>))]
+            [global::System.ComponentModel.TypeConverter(typeof(global::Yoyoyopo5.ValueWrapper.WrapperTypeConverter<AddsConvertersToFullWrapper, global::System.Int32>))]
+            public partial class AddsConvertersToFullWrapper
+                : global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.Int32, AddsConvertersToFullWrapper>
+            {
+                static AddsConvertersToFullWrapper global::Yoyoyopo5.ValueWrapper.IWrapValue<global::System.Int32, AddsConvertersToFullWrapper>.Create(global::System.Int32 value) => Create(value);
+            }
+
+            """,
+            ExpectedOutputFilePath = $"TestNamespace_AddsConvertersToFullWrapper{EXPECTED_FILE_PATH_SUFFIX}"
         }
     ];
     public static TheoryData<TestCaseWrapper<SourceGeneratorTestCase>> TestCases

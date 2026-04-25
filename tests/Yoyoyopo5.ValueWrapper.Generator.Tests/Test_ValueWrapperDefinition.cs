@@ -15,6 +15,7 @@ public class Test_ValueWrapperDefinition
         ToStringOverride = new(),
         HasEmptyConstructor = true,
         HasJsonConverterAttribute = true,
+        HasTypeConverterAttribute = false,
         HasOtherRequiredProperties = false,
         ImplicitOperator = null,
         IsGlobalNamespace = false,

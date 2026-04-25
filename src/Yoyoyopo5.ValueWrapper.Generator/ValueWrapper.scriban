@@ -23,6 +23,9 @@
 {{- if json_converter_type && json_create_expression ~}}
 [global::System.Text.Json.Serialization.JsonConverter(typeof({{ json_converter_type }}))]
 {{ end ~}}
+{{- if type_converter_type && json_create_expression ~}}
+[global::System.ComponentModel.TypeConverter(typeof({{ type_converter_type }}))]
+{{ end ~}}
 {{ partial_definition }}
 {{- if wrapper_interface && json_create_expression }}
     : {{ wrapper_interface }}

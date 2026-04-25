@@ -2,10 +2,10 @@
 
 namespace Yoyoyopo5.ValueWrapper.Tests.Unit;
 public abstract class Test_WrapperJsonConverter<TWrapper, TWrapped>
-    where TWrapper : IWrapValue<TWrapped, TWrapper>
+    where TWrapper : IWrapValue<TWrapped, TWrapper>, ITestWrapper<TWrapped, TWrapper>
 {
-    protected abstract TWrapped? TestValue { get; }
-    protected abstract TWrapper? TestWrapper { get; }
+    protected virtual TWrapped TestValue { get; } = TWrapper.TestValue;
+    protected virtual TWrapper TestWrapper { get; } = TWrapper.TestWrapper;
 
     private readonly static JsonSerializerOptions options = new()
     {
@@ -28,7 +28,7 @@ public abstract class Test_WrapperJsonConverter<TWrapper, TWrapped>
     {
         string json = JsonSerializer.Serialize(TestWrapper is not null ? TestWrapper.Value : default, options);
 
-        string result = JsonSerializer.Serialize(TestWrapper);
+        string result = JsonSerializer.Serialize(TestWrapper!);
 
         Assert.Equal(json, result);
     }

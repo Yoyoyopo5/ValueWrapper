@@ -1,10 +1,11 @@
 ﻿namespace Yoyoyopo5.ValueWrapper.Tests.Unit;
 
 [Wrapper<ulong>]
-public readonly partial record struct ULongWrapper(ulong Value);
-
-public class Test_ULongWrapper : Test_WrapperJsonConverter<ULongWrapper, ulong>
+public readonly partial record struct ULongWrapper(ulong Value) : ITestWrapper<ulong, ULongWrapper>
 {
-    protected override ulong TestValue { get; } = 29371654;
-    protected override ULongWrapper TestWrapper { get; } = new(500);
+    public static ulong TestValue => 1287;
+    public static ULongWrapper TestWrapper => new(123787);
 }
+
+public class Test_ULongWrapperJsonConverter : Test_WrapperJsonConverter<ULongWrapper, ulong>;
+public class Test_ULongWrapperTypeConverter : Test_WrapperTypeConverter<ULongWrapper, ulong>;
