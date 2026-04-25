@@ -15,6 +15,7 @@ internal record ValueWrapperDefinition
     public required bool IsPartial { get; init; }
     public required bool IsRecord { get; init; }
     public required bool HasJsonConverterAttribute { get; init; }
+    public required bool HasTypeConverterAttribute { get; init; }
     public required bool HasOtherRequiredProperties { get; init; }
     public required bool HasEmptyConstructor { get; init; }
     public RecordImmutableArray<ParentTypeDefinition> ParentTypes { get; init; } = new();

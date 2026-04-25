@@ -19,6 +19,7 @@ internal static class TemplateExtensions
                 WrappedTypeName = wrapper.WrappedType.FullyQualifiedName,
                 PartialDefinition = wrapper.PartialDeclaration,
                 JsonConverterType = wrapper.HasJsonConverterAttribute ? null : ValueWrapperConstants.WRAPPER_JSON_CONVERTER_NAME.Replace("`2", $"<{wrapper.Name}, {wrapper.WrappedType.FullyQualifiedName}>"),
+                TypeConverterType = wrapper.HasTypeConverterAttribute ? null : ValueWrapperConstants.WRAPPER_TYPE_CONVERTER_NAME.Replace("`2", $"<{wrapper.Name}, {wrapper.WrappedType.FullyQualifiedName}>"),
                 wrapper.ShouldAddValueProperty,
                 ShouldAddImplicitOperator = wrapper.ImplicitOperator is null,
                 ShouldAddToStringOverride = wrapper.ToStringOverride is null,

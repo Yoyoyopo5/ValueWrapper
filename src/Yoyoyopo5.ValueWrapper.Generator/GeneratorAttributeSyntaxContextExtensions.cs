@@ -20,7 +20,11 @@ internal static class GeneratorAttributeSyntaxContextExtensions
         ct.ThrowIfCancellationRequested();
         return wrapperTypeSymbol.ToValueWrapperDefinition(
             wrappedTypeSymbol,
-            context.SemanticModel.Compilation.GetTypeByMetadataName(ValueWrapperConstants.JSON_CONVERTER_ATTRIBUTE_TYPE_NAME),
+            new AssemblySymbolContext()
+            {
+                JsonConverterAttribute = context.SemanticModel.Compilation.GetTypeByMetadataName(ValueWrapperConstants.JSON_CONVERTER_ATTRIBUTE_TYPE_NAME),
+                TypeConverterAttribute = context.SemanticModel.Compilation.GetTypeByMetadataName(ValueWrapperConstants.TYPE_CONVERTER_ATTRIBUTE_TYPE_NAME)
+            },
             ct
             );
     }

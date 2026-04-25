@@ -1,10 +1,11 @@
 ﻿namespace Yoyoyopo5.ValueWrapper.Tests.Unit;
 
 [Wrapper<double>]
-public readonly partial record struct DoubleWrapper(double Value);
-
-public class Test_DoubleWrapper : Test_WrapperJsonConverter<DoubleWrapper, double>
+public readonly partial record struct DoubleWrapper(double Value) : ITestWrapper<double, DoubleWrapper>
 {
-    protected override double TestValue { get; } = 1.23;
-    protected override DoubleWrapper TestWrapper { get; } = new(2.4782);
+    public static double TestValue { get; } = 1.23;
+    public static DoubleWrapper TestWrapper { get; } = new(2.4782);
 }
+
+public class Test_DoubleWrapperJsonConverter : Test_WrapperJsonConverter<DoubleWrapper, double>;
+public class Test_DoubleWrapperTypeConverter : Test_WrapperTypeConverter<DoubleWrapper, double>;

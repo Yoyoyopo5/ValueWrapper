@@ -25,7 +25,7 @@ internal static class ValueWrapperDiagnostics
     public static readonly DiagnosticDescriptor JsonConstructionMethodMissingWarning = new(
         id: "VWG0003",
         title: "Wrapper type is not constructable",
-        messageFormat: "To enable wrapper Json deserialization, '{0}' must have: " +
+        messageFormat: "To enable wrapper JSON and Type conversion, '{0}' must have: " +
         "(1) a public constructor taking a single argument of the wrapped type, " +
         "(2) a publicly initializable Value property of the wrapped type, or " +
         "(3) a static Create method taking a single argument of the wrapped type and returning an instance of {0}",

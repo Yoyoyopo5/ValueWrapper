@@ -66,6 +66,12 @@ ColorName deserializedColor = JsonSerializer.Deserialize<ColorName>(json);
 Console.WriteLine(deserializedColor); // "green"
 ```
 
+#### TypeConverter Support
+
+A `TypeConverter` is added to the wrapper that can create the wrapper to and from its wrapped type. Conversion from `string` is also supported via `TypeConverter` passthrough.
+
+This allows wrappers to be used as their wrapped type in many scenarios, like `IConfigurationBinder` binding or ASP.NET Core query parameter binding.
+
 #### Nested Wrappers
 
 Wrappers inside other classes are supported, as long as each containing class is marked `partial`:
@@ -255,7 +261,7 @@ public static KilometersExtensions
 }
 ```
 
-## Benchmarks (v1.0.1)
+## Benchmarks
 
 ### ToString Passthrough
 
@@ -263,22 +269,22 @@ public static KilometersExtensions
 
 | Method            | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |------------------ |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| WrapperToString   | 47.77 ns | 0.920 ns | 0.860 ns |  0.95 |    0.03 | 0.0172 |     288 B |        1.00 |
-| PrimitiveToString | 50.30 ns | 1.041 ns | 1.157 ns |  1.00 |    0.03 | 0.0172 |     288 B |        1.00 |
+| WrapperToString   | 47.31 ns | 0.730 ns | 0.683 ns |  1.04 |    0.02 | 0.0172 |     288 B |        1.00 |
+| PrimitiveToString | 45.67 ns | 0.694 ns | 0.615 ns |  1.00 |    0.02 | 0.0172 |     288 B |        1.00 |
 
 #### Wrapped `double`
 
-| Method            | Mean     | Error    | StdDev   | Ratio | Gen0   | Allocated | Alloc Ratio |
-|------------------ |---------:|---------:|---------:|------:|-------:|----------:|------------:|
-| WrapperToString   | 38.56 ns | 0.317 ns | 0.281 ns |  0.97 | 0.0014 |      24 B |        1.00 |
-| PrimitiveToString | 39.64 ns | 0.387 ns | 0.362 ns |  1.00 | 0.0014 |      24 B |        1.00 |
+| Method            | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------ |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| WrapperToString   | 39.27 ns | 0.647 ns | 0.605 ns |  1.00 |    0.02 | 0.0014 |      24 B |        1.00 |
+| PrimitiveToString | 39.19 ns | 0.509 ns | 0.425 ns |  1.00 |    0.01 | 0.0014 |      24 B |        1.00 |
 
 #### Wrapped `string`
 
 | Method            | Mean      | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
 |------------------ |----------:|----------:|----------:|------:|--------:|----------:|------------:|
-| WrapperToString   | 0.0828 ns | 0.0243 ns | 0.0316 ns |  0.13 |    0.05 |         - |          NA |
-| PrimitiveToString | 0.6638 ns | 0.0507 ns | 0.0474 ns |  1.00 |    0.10 |         - |          NA |
+| WrapperToString   | 0.1560 ns | 0.0190 ns | 0.0177 ns |  0.32 |    0.04 |         - |          NA |
+| PrimitiveToString | 0.4907 ns | 0.0186 ns | 0.0165 ns |  1.00 |    0.05 |         - |          NA |
 
 ### System.Text.Json Round-Trip
 
@@ -288,22 +294,45 @@ Non-built-in wrapped types incur a penalty.
 
 | Method                 | Mean     | Error   | StdDev  | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
-| WrapperRoundTripJson   | 434.8 ns | 8.37 ns | 9.96 ns |  1.79 |    0.05 | 0.0057 |      96 B |        1.00 |
-| PrimitiveRoundTripJson | 242.5 ns | 4.45 ns | 5.12 ns |  1.00 |    0.03 | 0.0057 |      96 B |        1.00 |
+| WrapperRoundTripJson   | 410.1 ns | 5.10 ns | 4.52 ns |  1.82 |    0.06 | 0.0057 |      96 B |        1.00 |
+| PrimitiveRoundTripJson | 225.4 ns | 4.00 ns | 7.01 ns |  1.00 |    0.04 | 0.0057 |      96 B |        1.00 |
 
 #### Wrapped `double`
 
 | Method                 | Mean     | Error   | StdDev  | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
-| WrapperRoundTripJson   | 161.3 ns | 1.73 ns | 1.61 ns |  1.03 |    0.02 | 0.0019 |      32 B |        1.00 |
-| PrimitiveRoundTripJson | 156.2 ns | 2.00 ns | 1.87 ns |  1.00 |    0.02 | 0.0019 |      32 B |        1.00 |
+| WrapperRoundTripJson   | 160.5 ns | 2.49 ns | 2.33 ns |  1.04 |    0.02 | 0.0019 |      32 B |        1.00 |
+| PrimitiveRoundTripJson | 154.3 ns | 1.26 ns | 1.18 ns |  1.00 |    0.01 | 0.0019 |      32 B |        1.00 |
 
 #### Wrapped `string`
 
 | Method                 | Mean     | Error   | StdDev  | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
-| WrapperRoundTripJson   | 128.7 ns | 1.18 ns | 1.04 ns |  0.96 |    0.01 | 0.0043 |      72 B |        1.00 |
-| PrimitiveRoundTripJson | 134.6 ns | 1.99 ns | 1.86 ns |  1.00 |    0.02 | 0.0043 |      72 B |        1.00 |
+| WrapperRoundTripJson   | 136.1 ns | 2.08 ns | 1.95 ns |  1.00 |    0.02 | 0.0043 |      72 B |        1.00 |
+| PrimitiveRoundTripJson | 136.3 ns | 1.49 ns | 1.32 ns |  1.00 |    0.01 | 0.0043 |      72 B |        1.00 |
+
+### TypeConverter Round-Trip (to/from `string`)
+
+#### Wrapped `struct`
+
+| Method                   | Mean     | Error   | StdDev  | Ratio | Gen0   | Allocated | Alloc Ratio |
+|------------------------- |---------:|--------:|--------:|------:|-------:|----------:|------------:|
+| WrapperRoundTripString   | 248.5 ns | 3.40 ns | 3.01 ns |  1.05 | 0.0086 |     144 B |        1.20 |
+| PrimitiveRoundTripString | 235.9 ns | 1.84 ns | 1.54 ns |  1.00 | 0.0072 |     120 B |        1.00 |
+
+#### Wrapped `double`
+
+| Method                   | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| WrapperRoundTripString   | 76.56 ns | 1.262 ns | 1.054 ns |  1.03 |    0.02 | 0.0057 |      96 B |        1.33 |
+| PrimitiveRoundTripString | 74.03 ns | 0.826 ns | 0.773 ns |  1.00 |    0.01 | 0.0043 |      72 B |        1.00 |
+
+#### Wrapped `string`
+
+| Method                   | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| WrapperRoundTripString   | 14.56 ns | 0.169 ns | 0.149 ns |  1.27 |    0.02 | 0.0029 |      48 B |        2.00 |
+| PrimitiveRoundTripString | 11.43 ns | 0.175 ns | 0.155 ns |  1.00 |    0.02 | 0.0014 |      24 B |        1.00 |
 
 ### Source Generator
 

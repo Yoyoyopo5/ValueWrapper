@@ -1,10 +1,11 @@
 ﻿namespace Yoyoyopo5.ValueWrapper.Tests.Unit;
 
 [Wrapper<bool>]
-public readonly partial record struct BoolWrapper(bool Value);
-
-public class Test_BoolWrapper : Test_WrapperJsonConverter<BoolWrapper, bool>
+public readonly partial record struct BoolWrapper(bool Value) : ITestWrapper<bool, BoolWrapper>
 {
-    protected override bool TestValue { get; } = false;
-    protected override BoolWrapper TestWrapper { get; } = new(true);
+    public static bool TestValue { get; } = false;
+    public static BoolWrapper TestWrapper { get; } = new(true);
 }
+
+public class Test_BoolWrapperJsonConverter : Test_WrapperJsonConverter<BoolWrapper, bool>;
+public class Test_BoolWrapperTypeConverter : Test_WrapperTypeConverter<BoolWrapper, bool>;
