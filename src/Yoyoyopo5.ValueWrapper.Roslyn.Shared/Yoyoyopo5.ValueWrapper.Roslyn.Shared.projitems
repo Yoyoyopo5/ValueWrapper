@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AccessibilityExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMethodSymbolExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INamedTypeSymbolExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITypeSymbolExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Polyfills.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecordImmutableArray.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TypeKindExtensions.cs" />

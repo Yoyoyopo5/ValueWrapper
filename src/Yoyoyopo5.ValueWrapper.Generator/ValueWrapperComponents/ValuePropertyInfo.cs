@@ -24,7 +24,7 @@ public readonly record struct ValuePropertyInfo
     /// </returns>
     public static ValuePropertyInfo? FromTypeSymbol(
         INamedTypeSymbol symbol,
-        INamedTypeSymbol wrappedTypeSymbol,
+        ITypeSymbol wrappedTypeSymbol,
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();

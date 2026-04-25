@@ -16,7 +16,7 @@ internal static class INamedTypeSymbolExtensions
 {
     public static ValueWrapperDefinition? ToValueWrapperDefinition(
         this INamedTypeSymbol typeSymbol,
-        INamedTypeSymbol wrappedTypeSymbol,
+        ITypeSymbol wrappedTypeSymbol,
         AssemblySymbolContext symbolContext,
         CancellationToken ct)
         => new()

@@ -22,7 +22,7 @@ public readonly record struct StaticCreateMethodInfo
     /// </returns>
     public static StaticCreateMethodInfo? FromTypeSymbol(
         INamedTypeSymbol symbol,
-        INamedTypeSymbol wrappedTypeSymbol,
+        ITypeSymbol wrappedTypeSymbol,
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();

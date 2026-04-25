@@ -15,7 +15,7 @@ internal static class GeneratorAttributeSyntaxContextExtensions
         if (context.TargetSymbol is not INamedTypeSymbol { IsStatic: false } wrapperTypeSymbol)
             return null;
         ct.ThrowIfCancellationRequested();
-        if (context.Attributes.First().AttributeClass?.TypeArguments.FirstOrDefault() is not INamedTypeSymbol wrappedTypeSymbol)
+        if (context.Attributes.First().AttributeClass?.TypeArguments.FirstOrDefault() is not ITypeSymbol wrappedTypeSymbol)
             return null;
         ct.ThrowIfCancellationRequested();
         return wrapperTypeSymbol.ToValueWrapperDefinition(

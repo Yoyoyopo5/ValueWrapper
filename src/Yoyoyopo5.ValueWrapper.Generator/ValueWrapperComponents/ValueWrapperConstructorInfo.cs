@@ -23,7 +23,7 @@ public readonly record struct ValueWrapperConstructorInfo
     /// </returns>
     public static ValueWrapperConstructorInfo? FromWrapperType(
         INamedTypeSymbol symbol,
-        INamedTypeSymbol wrappedTypeSymbol,
+        ITypeSymbol wrappedTypeSymbol,
         CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();

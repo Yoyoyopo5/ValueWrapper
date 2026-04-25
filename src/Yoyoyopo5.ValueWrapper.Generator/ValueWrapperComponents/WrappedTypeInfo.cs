@@ -23,7 +23,7 @@ public readonly record struct WrappedTypeInfo
     /// <returns>
     /// A <see cref="WrappedTypeInfo"/> with info about a specific wrapped <see cref="INamedTypeSymbol"/>.
     /// </returns>
-    public static WrappedTypeInfo FromTypeSymbol(INamedTypeSymbol symbol, CancellationToken ct)
+    public static WrappedTypeInfo FromTypeSymbol(ITypeSymbol symbol, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
         return new()
