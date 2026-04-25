@@ -26,6 +26,109 @@ public record Person(string Name, uint Age);
 public partial class InactivePerson;
 ```
 
+## Use Cases
+
+#### Reduce Bugs with Constrained Signatures
+
+Turn runtime exceptions into compile-time errors:
+
+Before:
+```cs
+void UpdateColorBuggy(string colorName) { }
+string username = "xX_username_Xx";
+
+...
+
+UpdateColorBuggy(username); // Compiles with bug!
+```
+
+After:
+```cs
+// I can only take a ColorName type.
+void UpdateColor(ColorName color) { }
+Username username = new("xX_username_Xx");
+
+...
+
+UpdateColor(username); // Compiler error! 
+```
+
+### Create Enumerations
+
+Have a set of possible values? Don't use an `enum`, use a wrapper with static definitions:
+
+```cs
+[Wrapper<string>]
+public readonly partial record struct ReportStatus
+{
+    public static ReportStatus Accepted { get; } = new("accepted");
+    public static ReportStatus Rejected { get; } = new("rejected");
+    public static ReportStatus Unknown { get; } = new("unknown");
+
+    public string Value { get; }
+    private ReportStatus(string value) => Value = value;
+
+    internal static ReportStatus Create(string value) => new(value);
+}
+```
+
+You can also create unbounded value sets:
+
+```cs
+[Wrapper<string>]
+public readonly partial record struct ColorName(string Value)
+{
+    public static ColorName SkyBlue { get; } = new("sky_blue");
+    public static ColorName EggplantPurple { get; } = new("eggplant_purple");
+}
+
+ColorName _customColor = new("very_red");
+```
+
+### Add Validation
+
+Wrapper types can be used to put validation at the type level, instead of littered around your codebase:
+
+```cs
+[Wrapper<int>]
+public readonly partial record struct EvenNumber
+{
+    public int Value { get; private init; }
+
+    public static EvenNumber? ParseOrNull(int value)
+        => value switch 
+        {
+            _ when value % 2 != 0 => null,
+            _ => new() { Value = value }
+        };
+
+    internal static EvenNumber Create(int value)
+        => ParseOrNull(value) is EvenNumber even ? even : throw new ArgumentException("value must be even.");
+} 
+```
+
+### Create Bounded Extensions
+
+Don't extend primitives; extend wrappers instead:
+
+```cs
+public static BadExtensions
+{
+    public static decimal ConvertToMiles(this decimal kilometers) { }
+}
+
+[Wrapper<decimal>]
+public partial record Kilometers;
+
+[Wrapper<decimal>]
+public partial record Miles;
+
+public static KilometersExtensions
+{
+    public static Miles ConvertToMiles(this Kilometers kilometers) { }
+}
+```
+
 ### Wrapper Features
 
 #### Value Property
@@ -158,110 +261,7 @@ public readonly partial record struct NegativeNumber
 }
 ```
 
-## Use Cases
-
-#### Reduce Bugs with Constrained Signatures
-
-Turn runtime exceptions into compile-time errors:
-
-Before:
-```cs
-void UpdateColorBuggy(string colorName) { }
-string username = "xX_username_Xx";
-
-...
-
-UpdateColorBuggy(username); // Compiles with bug!
-```
-
-After:
-```cs
-// I can only take a ColorName type.
-void UpdateColor(ColorName color) { }
-Username username = new("xX_username_Xx");
-
-...
-
-UpdateColor(username); // Compiler error! 
-```
-
-### Create Enumerations
-
-Have a set of possible values? Don't use an `enum`, use a wrapper with static definitions:
-
-```cs
-[Wrapper<string>]
-public readonly partial record struct ReportStatus
-{
-    public static ReportStatus Accepted { get; } = new("accepted");
-    public static ReportStatus Rejected { get; } = new("rejected");
-    public static ReportStatus Unknown { get; } = new("unknown");
-
-    public string Value { get; }
-    private ReportStatus(string value) => Value = value;
-
-    internal static ReportStatus Create(string value) => new(value);
-}
-```
-
-You can also create unbounded value sets:
-
-```cs
-[Wrapper<string>]
-public readonly partial record struct ColorName(string Value)
-{
-    public static ColorName SkyBlue { get; } = new("sky_blue");
-    public static ColorName EggplantPurple { get; } = new("eggplant_purple");
-}
-
-ColorName _customColor = new("very_red");
-```
-
-### Add Validation
-
-Wrapper types can be used to put validation at the type level, instead of littered around your codebase:
-
-```cs
-[Wrapper<int>]
-public readonly partial record struct EvenNumber
-{
-    public int Value { get; private init; }
-
-    public static EvenNumber? ParseOrNull(int value)
-        => value switch 
-        {
-            _ when value % 2 != 0 => null,
-            _ => new() { Value = value }
-        };
-
-    internal static EvenNumber Create(int value)
-        => ParseOrNull(value) is EvenNumber even ? even : throw new ArgumentException("value must be even.");
-} 
-```
-
-### Create Bounded Extensions
-
-Don't extend primitives; extend wrappers instead:
-
-```cs
-public static BadExtensions
-{
-    public static decimal ConvertToMiles(this decimal kilometers) { }
-}
-
-[Wrapper<decimal>]
-public partial record Kilometers;
-
-[Wrapper<decimal>]
-public partial record Miles;
-
-public static KilometersExtensions
-{
-    public static Miles ConvertToMiles(this Kilometers kilometers) { }
-}
-```
-
-## Benchmarks
+## Benchmarks (v1.1.0)
 
 ### ToString Passthrough
 
@@ -338,5 +338,5 @@ Non-built-in wrapped types incur a penalty.
 
 | Method             | Mean     | Error    | StdDev   | Gen0   | Gen1   | Allocated |
 |------------------- |---------:|---------:|---------:|-------:|-------:|----------:|
-| RunGenerator       | 76.26 us | 0.734 us | 0.613 us | 4.8828 | 0.4883 |  81.71 KB |
-| RunGeneratorCached | 29.58 us | 0.115 us | 0.090 us | 1.3123 | 0.0305 |  21.85 KB |
+| RunGenerator       | 83.77 us | 1.661 us | 1.912 us | 4.8828 | 0.4883 |  83.97 KB |
+| RunGeneratorCached | 30.59 us | 0.218 us | 0.204 us | 1.3428 | 0.0305 |  21.99 KB |
