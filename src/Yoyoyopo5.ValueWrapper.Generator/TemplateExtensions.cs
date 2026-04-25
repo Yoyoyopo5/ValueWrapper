@@ -1,4 +1,5 @@
-﻿using Scriban;
+﻿using Microsoft.CodeAnalysis;
+using Scriban;
 using System;
 using System.Linq;
 using Yoyoyopo5.ValueWrapper.Roslyn.Shared;
@@ -21,7 +22,7 @@ internal static class TemplateExtensions
                 JsonConverterType = wrapper.HasJsonConverterAttribute ? null : ValueWrapperConstants.WRAPPER_JSON_CONVERTER_NAME.Replace("`2", $"<{wrapper.Name}, {wrapper.WrappedType.FullyQualifiedName}>"),
                 TypeConverterType = wrapper.HasTypeConverterAttribute ? null : ValueWrapperConstants.WRAPPER_TYPE_CONVERTER_NAME.Replace("`2", $"<{wrapper.Name}, {wrapper.WrappedType.FullyQualifiedName}>"),
                 wrapper.ShouldAddValueProperty,
-                ShouldAddImplicitOperator = wrapper.ImplicitOperator is null,
+                ShouldAddImplicitOperator = wrapper.ImplicitOperator is null && wrapper.WrappedType.TypeKind != TypeKind.Interface,
                 ShouldAddToStringOverride = wrapper.ToStringOverride is null,
                 WrapperInterface = ValueWrapperConstants.WRAPPER_INTERFACE_NAME.Replace("`2", $"<{wrapper.WrappedType.FullyQualifiedName}, {wrapper.Name}>"),
                 wrapper.JsonCreateExpression,
