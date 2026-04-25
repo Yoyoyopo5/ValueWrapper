@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 using Yoyoyopo5.ValueWrapper.Generator.ValueWrapperComponents;
 using Yoyoyopo5.ValueWrapper.Roslyn.Shared;
 
@@ -24,7 +25,7 @@ public class Test_ValueWrapperDefinition
         Name = WRAPPER_NAME,
         ParentTypes = ImmutableArray.Create(new ParentTypeDefinition() { Name = "TestParent", IsPartial = true, PartialDeclaration = "public partial record TestParent" }).ToRecordImmutableArray(),
         PartialDeclaration = "public partial record TestWrapper",
-        WrappedType = new() { FullyQualifiedName = "global::System.String", IsNullable = false, IsValueType = true },
+        WrappedType = new() { FullyQualifiedName = "global::System.String", IsNullable = false, IsValueType = true, TypeKind = TypeKind.Class },
         WrapperConstructor = new() { IsPrimaryConstructor = true, WrappedValueParameterName = "Value" },
         WrapperValueProperty = new() { Initializable = true, IsOfWrappedType = true, Name = "Value" }
     };

@@ -30,7 +30,8 @@ public readonly record struct WrappedTypeInfo
         {
             FullyQualifiedName = symbol.ToDisplayString(RealFullyQualifiedFormat) + ((!symbol.IsValueType && symbol.IsNullable()) ? "?" : string.Empty),
             IsNullable = symbol.IsNullable(),
-            IsValueType = symbol.IsValueType
+            IsValueType = symbol.IsValueType,
+            TypeKind = symbol.TypeKind
         };
     }
     /// <summary>
@@ -49,4 +50,8 @@ public readonly record struct WrappedTypeInfo
     /// Indicates whether the type is a value type.
     /// </summary>
     public required bool IsValueType { get; init; }
+    /// <summary>
+    /// Indicates whether the type is an interface.
+    /// </summary>
+    public required TypeKind TypeKind { get; init; }
 }
