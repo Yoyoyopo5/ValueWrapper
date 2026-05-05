@@ -261,7 +261,7 @@ public readonly partial record struct NegativeNumber
 }
 ```
 
-## Benchmarks (v1.1.0)
+## Benchmarks (v1.1.1)
 
 ### ToString Passthrough
 
