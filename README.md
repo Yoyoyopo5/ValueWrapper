@@ -311,6 +311,13 @@ Non-built-in wrapped types incur a penalty.
 | WrapperRoundTripJson   | 136.1 ns | 2.08 ns | 1.95 ns |  1.00 |    0.02 | 0.0043 |      72 B |        1.00 |
 | PrimitiveRoundTripJson | 136.3 ns | 1.49 ns | 1.32 ns |  1.00 |    0.01 | 0.0043 |      72 B |        1.00 |
 
+### System.Text.Json Round-Trip Dictionary with Wrapper Keys
+
+| Method                            | Mean     | Error   | StdDev  | Ratio | Gen0   | Allocated | Alloc Ratio |
+|---------------------------------- |---------:|--------:|--------:|------:|-------:|----------:|------------:|
+| StringKeyDictionaryRoundTripJson  | 271.0 ns | 2.17 ns | 1.92 ns |  1.00 | 0.0200 |     336 B |        1.00 |
+| WrapperKeyDictionaryRoundTripJson | 277.7 ns | 3.20 ns | 2.99 ns |  1.02 | 0.0219 |     368 B |        1.10 |
+
 ### TypeConverter Round-Trip (to/from `string`)
 
 #### Wrapped `struct`
