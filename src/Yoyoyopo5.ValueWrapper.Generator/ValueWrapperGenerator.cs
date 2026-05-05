@@ -6,10 +6,11 @@ using System.Linq;
 using System.IO;
 using Yoyoyopo5.ValueWrapper.Roslyn.Shared;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Yoyoyopo5.ValueWrapper.Generator;
 
-public readonly record struct InjectedSource(string Filename, string Source);
+public readonly record struct InjectedSource(string Filename, SourceText Source);
 
 [Generator]
 public class ValueWrapperGenerator : IIncrementalGenerator
@@ -18,18 +19,27 @@ public class ValueWrapperGenerator : IIncrementalGenerator
 
     private static string GetEmbeddedResource(string resourceName)
     {
-        if (typeof(ValueWrapperGenerator).Assembly.GetManifestResourceStream(resourceName) is not Stream resourceStream)
-            throw new FileNotFoundException($"Embedded resource '{resourceName}' was not found.");
+        using Stream resourceStream 
+            = typeof(ValueWrapperGenerator).Assembly.GetManifestResourceStream(resourceName)
+            ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' was not found.");
         using StreamReader reader = new(resourceStream);
         return reader.ReadToEnd();
     }
 
+    private static SourceText GetEmbeddedSource(string resourceName)
+    {
+        using Stream resourceStream 
+            = typeof(ValueWrapperGenerator).Assembly.GetManifestResourceStream(resourceName)
+            ?? throw new FileNotFoundException($"Embedded resource '{resourceName}' was not found.");
+        return SourceText.From(resourceStream, canBeEmbedded: true);
+    }
+
     private const string INJECTED_SOURCE_PATH = "Yoyoyopo5.ValueWrapper.Core";
     public static ImmutableArray<InjectedSource> CoreSources = ImmutableArray.Create<InjectedSource>(
-        new("IWrapValue.cs", GetEmbeddedResource($"{INJECTED_SOURCE_PATH}.IWrapValue.cs")),
-        new("WrapperAttribute.cs", GetEmbeddedResource($"{INJECTED_SOURCE_PATH}.WrapperAttribute.cs")),
-        new("WrapperJsonConverter.cs", GetEmbeddedResource($"{INJECTED_SOURCE_PATH}.WrapperJsonConverter.cs")),
-        new("WrapperTypeConverter.cs", GetEmbeddedResource($"{INJECTED_SOURCE_PATH}.WrapperTypeConverter.cs"))
+        new("IWrapValue.cs", GetEmbeddedSource($"{INJECTED_SOURCE_PATH}.IWrapValue.cs")),
+        new("WrapperAttribute.cs", GetEmbeddedSource($"{INJECTED_SOURCE_PATH}.WrapperAttribute.cs")),
+        new("WrapperJsonConverter.cs", GetEmbeddedSource($"{INJECTED_SOURCE_PATH}.WrapperJsonConverter.cs")),
+        new("WrapperTypeConverter.cs", GetEmbeddedSource($"{INJECTED_SOURCE_PATH}.WrapperTypeConverter.cs"))
         );
 
     private readonly static Lazy<Template> _template 
