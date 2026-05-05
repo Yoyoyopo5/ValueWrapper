@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -9,7 +10,7 @@ namespace Yoyoyopo5.ValueWrapper;
 /// </summary>
 /// <typeparam name="TWrapper">The wrapper type.</typeparam>
 /// <typeparam name="TWrapped">The wrapped type.</typeparam>
-public class WrapperTypeConverter<TWrapper, TWrapped> : TypeConverter
+internal class WrapperTypeConverter<TWrapper, TWrapped> : TypeConverter
     where TWrapper : IWrapValue<TWrapped, TWrapper>
 {
     private static readonly TypeConverter _wrappedConverter = TypeDescriptor.GetConverter(typeof(TWrapped));

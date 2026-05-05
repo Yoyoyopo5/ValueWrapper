@@ -36,4 +36,12 @@
 
   <Import Project="..\Yoyoyopo5.ValueWrapper.Roslyn.Shared\Yoyoyopo5.ValueWrapper.Roslyn.Shared.projitems" Label="Shared" />
 
+  <!-- Here we bring in the shared Core .cs files to the assembly as embedded resources, without compiling them -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\Yoyoyopo5.ValueWrapper.Core\**\*.cs">
+      <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <LogicalName>Yoyoyopo5.ValueWrapper.Core.%(RecursiveDir)%(FileName)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@
 /// <remarks>
 /// This interface enables the use of the <see cref="WrapperJsonConverter{TWrapper, TWrapped}"/>.
 /// </remarks>
-public interface IWrapValue<T, out TWrapper>
+internal interface IWrapValue<T, out TWrapper>
 {
     /// <summary>
     /// The wrapped value.

@@ -1,5 +1,8 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Testing;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
+using Yoyoyopo5.ValueWrapper.Generator;
 using Yoyoyopo5.ValueWrapper.Tests.Shared;
 
 namespace Yoyoyopo5.ValueWrapper.Analyzer.Tests;
@@ -12,7 +15,12 @@ public class Test_ValueWrapperAnalyzer
         {
             ReferenceAssemblies = ReferenceAssemblies.Net.Net100
         };
-        test.TestState.AdditionalReferences.Add(typeof(WrapperAttribute<>).Assembly);
+
+        foreach (InjectedSource source in ValueWrapperGenerator.CoreSources)
+        {
+            test.TestState.Sources.Add((typeof(ValueWrapperGenerator), source.Filename, source.Source));
+        }
+
         return test;
     }
 

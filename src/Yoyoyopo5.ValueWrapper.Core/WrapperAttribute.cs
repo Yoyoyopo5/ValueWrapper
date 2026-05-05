@@ -1,4 +1,6 @@
-﻿namespace Yoyoyopo5.ValueWrapper;
+﻿using System;
+
+namespace Yoyoyopo5.ValueWrapper;
 
 /// <summary>
 /// Indicates the type is a wrapper around another type.
@@ -9,4 +11,4 @@
 /// </remarks>
 /// <typeparam name="T">The type to wrap.</typeparam>
 [AttributeUsage(validOn: AttributeTargets.Struct | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class WrapperAttribute<T> : Attribute;
+internal class WrapperAttribute<T> : Attribute;
