@@ -22,8 +22,9 @@ public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
         if (typeof(TWrapped) == typeof(string))
         {
             string? propertyName = reader.GetString();
-            if (propertyName is not null)
-                return TWrapper.Create(AsWrapped(ref propertyName));
+            return propertyName is null 
+                ? default! // I don't think this can actually happen since JSON property names can't be null.
+                : TWrapper.Create(AsWrapped(ref propertyName));
         }
 
         JsonConverter<TWrapped> converter = (JsonConverter<TWrapped>)options.GetConverter(typeof(TWrapped));
