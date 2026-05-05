@@ -19,7 +19,7 @@ public abstract class ToStringBenchmarks<TWrapper, TWrapped>
     protected abstract TWrapper Wrapper { get; }
 
     [Benchmark]
-    public void WrapperToString() => Wrapper.ToString();
+    public void WrapperToString() => Wrapper!.ToString();
 
     [Benchmark(Baseline = true)]
     public string? PrimitiveToString() => Primitive?.ToString();
