@@ -46,19 +46,13 @@ public class GeneratorBenchmarks
         _compilation = CSharpCompilation.Create(
             "Benchmark",
             [CSharpSyntaxTree.ParseText(SOURCE_INPUT, path: "BenchmarkWrapper.cs")],
-            [
-                ..Basic.Reference.Assemblies.Net100.References.All.AsEnumerable<MetadataReference>(),
-                MetadataReference.CreateFromFile(typeof(WrapperAttribute<>).Assembly.Location)
-                ]
+            [.. Basic.Reference.Assemblies.Net100.References.All.AsEnumerable<MetadataReference>()]
             );
 
         _modifiedCompilation = CSharpCompilation.Create(
             "Benchmark",
             [CSharpSyntaxTree.ParseText(MODIFIED_SOURCE_INPUT, path: "BenchmarkWrapper.cs")],
-            [
-                ..Basic.Reference.Assemblies.Net100.References.All.AsEnumerable<MetadataReference>(),
-                MetadataReference.CreateFromFile(typeof(WrapperAttribute<>).Assembly.Location)
-                ]
+            [.. Basic.Reference.Assemblies.Net100.References.All.AsEnumerable<MetadataReference>()]
             );
 
         _generatorDriver = CSharpGeneratorDriver.Create(
