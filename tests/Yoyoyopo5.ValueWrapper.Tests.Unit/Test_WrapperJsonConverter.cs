@@ -42,4 +42,22 @@ public abstract class Test_WrapperJsonConverter<TWrapper, TWrapped>
 
         Assert.Equal(TestWrapper is not null ? TestWrapper.Value : default, result is not null ? result.Value : default);
     }
+    
+    [Fact]
+    public void RoundTrip_DictionaryWithWrapperKeysAndValues_PreservesKeysAndValues()
+    {
+        Dictionary<WrapperKey, TWrapper> dictionary = new()
+        {
+            [new WrapperKey("test_key")] = TestWrapper
+        };
+
+        string json = JsonSerializer.Serialize(dictionary);
+        Dictionary<WrapperKey, TWrapper>? result = JsonSerializer.Deserialize<Dictionary<WrapperKey, TWrapper>>(json);
+
+        Assert.NotNull(result);
+        Assert.Equivalent(dictionary, result);
+    }
 }
+
+[Wrapper<string>]
+public readonly partial record struct WrapperKey(string Value);
