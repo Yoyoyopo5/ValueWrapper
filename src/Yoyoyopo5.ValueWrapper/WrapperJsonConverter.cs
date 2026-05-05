@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -14,6 +15,21 @@ public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
         => Unsafe.As<T, TWrapped>(ref value);
     private static T AsWrapped<T>(ref TWrapped value)
         => Unsafe.As<TWrapped, T>(ref value);
+
+    /// <inheritdoc/>
+    public override TWrapper ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (typeof(TWrapped) == typeof(string))
+        {
+            string? propertyName = reader.GetString();
+            if (propertyName is not null)
+                return TWrapper.Create(AsWrapped(ref propertyName));
+        }
+
+        JsonConverter<TWrapped> converter = (JsonConverter<TWrapped>)options.GetConverter(typeof(TWrapped));
+        return TWrapper.Create(converter.ReadAsPropertyName(ref reader, typeof(TWrapped), options));
+    }
+
     /// <inheritdoc/>
     public override TWrapper? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -133,6 +149,21 @@ public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
             _ => default,
         };
     }
+
+    /// <inheritdoc/>
+    public override void WriteAsPropertyName(Utf8JsonWriter writer, [DisallowNull] TWrapper value, JsonSerializerOptions options)
+    {
+        TWrapped wrappedValue = value.Value ?? throw new NotSupportedException($"A {typeof(TWrapper).FullName} with a null Value cannot be serialized as a dictionary key.");
+        if (typeof(TWrapped) == typeof(string))
+        {
+            writer.WritePropertyName(AsWrapped<string>(ref wrappedValue));
+            return;
+        }
+
+        JsonConverter<TWrapped> wrappedConverter = (JsonConverter<TWrapped>)options.GetConverter(typeof(TWrapped));
+        wrappedConverter.WriteAsPropertyName(writer, wrappedValue, options);
+    }
+
     /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, TWrapper value, JsonSerializerOptions options)
     {
