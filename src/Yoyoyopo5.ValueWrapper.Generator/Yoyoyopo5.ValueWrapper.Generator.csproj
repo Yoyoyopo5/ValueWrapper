@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
+    <UseGeneratorSystemTextJson>true</UseGeneratorSystemTextJson>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +31,10 @@
       <TargetPathWithTargetPlatformMoniker Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
+
+  <ItemGroup>
+    <None Include="$(PkgScriban)\lib\netstandard2.0\Scriban.dll" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />

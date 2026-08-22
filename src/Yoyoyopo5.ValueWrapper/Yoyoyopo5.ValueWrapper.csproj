@@ -45,17 +45,18 @@
                               Condition=" '$(TargetFramework)' == 'net8.0' "
                               />
       <!-- Pack Scriban (Condition ensures it is only packed once instead of for each target framework) -->
-      <TfmSpecificPackageFile Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll"
+      <TfmSpecificPackageFile Include="../Yoyoyopo5.ValueWrapper.Generator/bin/$(Configuration)/netstandard2.0/Scriban.dll"
+                              Pack="true"
+                              PackagePath="analyzers/roslyn4.8/dotnet/cs"
+                              Condition=" '$(TargetFramework)' == 'net8.0' "
+                              />
+      <TfmSpecificPackageFile Include="../Yoyoyopo5.ValueWrapper.Generator/bin/$(Configuration)/netstandard2.0/System.Text.Json.dll"
                               Pack="true"
                               PackagePath="analyzers/roslyn4.8/dotnet/cs"
                               Condition=" '$(TargetFramework)' == 'net8.0' "
                               />
     </ItemGroup>
   </Target>
-
-  <ItemGroup>
-    <PackageReference Include="Scriban" PrivateAssets="all" GeneratePathProperty="true" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Yoyoyopo5.ValueWrapper.Analyzer/Yoyoyopo5.ValueWrapper.Analyzer.csproj" ReferenceOutputAssembly="false" />
