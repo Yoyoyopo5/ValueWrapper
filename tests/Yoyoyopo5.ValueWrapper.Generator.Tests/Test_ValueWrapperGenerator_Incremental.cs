@@ -81,10 +81,7 @@ public class Test_ValueWrapperGenerator_Incremental
         => CSharpCompilation.Create(
             "Tests",
             [syntax],
-            [
-                ..await ReferenceAssemblies.Net.Net100.ResolveAsync(null, ct),
-                MetadataReference.CreateFromFile(typeof(WrapperAttribute<>).Assembly.Location)
-            ]
+            [.. await ReferenceAssemblies.Net.Net100.ResolveAsync(null, ct)]
             );
 
     [Theory]

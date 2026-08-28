@@ -6,7 +6,6 @@ namespace Yoyoyopo5.ValueWrapper.Benchmarks.Create;
 
 [MemoryDiagnoser]
 public abstract class CreateBenchmarks<TWrapper, TWrapped>
-    where TWrapper : IWrapValue<TWrapped, TWrapper>
 {
     public static IReadOnlyList<Summary> Run()
     {

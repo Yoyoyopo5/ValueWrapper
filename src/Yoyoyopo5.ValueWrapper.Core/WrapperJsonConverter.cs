@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,7 +9,7 @@ namespace Yoyoyopo5.ValueWrapper;
 /// <summary>
 /// Used to serialize basic wrapper classes and structs that implement <see cref="IWrapValue{T, TWrapper}"/>.
 /// </summary>
-public class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
+internal class WrapperJsonConverter<TWrapper, TWrapped> : JsonConverter<TWrapper>
     where TWrapper : IWrapValue<TWrapped, TWrapper>
 {
     private static TWrapped AsWrapped<T>(ref T value)

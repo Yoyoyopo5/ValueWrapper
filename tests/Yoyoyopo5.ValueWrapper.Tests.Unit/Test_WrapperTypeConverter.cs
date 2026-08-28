@@ -2,8 +2,13 @@
 
 namespace Yoyoyopo5.ValueWrapper.Tests.Unit;
 
+public abstract class IWrapValueProxy
+{
+
+}
+
 public abstract class Test_WrapperTypeConverter<TWrapper, TWrapped>
-    where TWrapper : IWrapValue<TWrapped, TWrapper>, ITestWrapper<TWrapped, TWrapper>
+    where TWrapper : ITestWrapper<TWrapped, TWrapper>
 {
     protected virtual TWrapped TestValue { get; } = TWrapper.TestValue;
     protected virtual TWrapper TestWrapper { get; } = TWrapper.TestWrapper;

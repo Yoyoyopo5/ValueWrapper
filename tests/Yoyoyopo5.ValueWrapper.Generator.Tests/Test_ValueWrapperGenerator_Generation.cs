@@ -436,8 +436,11 @@ public class Test_ValueWrapperGenerator_Generation
         {
             ReferenceAssemblies = ReferenceAssemblies.Net.Net100
         };
-        test.TestState.AdditionalReferences.Add(typeof(WrapperAttribute<>).Assembly);
         test.TestState.Sources.Add(FAKE_CONVERTER);
+        foreach (InjectedSource source in ValueWrapperGenerator.CoreSources)
+        {
+            test.TestState.GeneratedSources.Add((typeof(ValueWrapperGenerator), source.Filename, source.Source));
+        }
         return test;
     }
 

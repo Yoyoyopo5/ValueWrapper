@@ -6,7 +6,6 @@ namespace Yoyoyopo5.ValueWrapper.Benchmarks.ToString;
 
 [MemoryDiagnoser]
 public abstract class ToStringBenchmarks<TWrapper, TWrapped>
-    where TWrapper : IWrapValue<TWrapped, TWrapper>
 {
     public static IReadOnlyList<Summary> Run()
     {
@@ -20,7 +19,7 @@ public abstract class ToStringBenchmarks<TWrapper, TWrapped>
     protected abstract TWrapper Wrapper { get; }
 
     [Benchmark]
-    public void WrapperToString() => Wrapper.ToString();
+    public void WrapperToString() => Wrapper!.ToString();
 
     [Benchmark(Baseline = true)]
     public string? PrimitiveToString() => Primitive?.ToString();

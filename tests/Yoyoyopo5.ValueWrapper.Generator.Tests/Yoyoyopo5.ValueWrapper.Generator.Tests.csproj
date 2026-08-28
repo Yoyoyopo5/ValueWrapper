@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Yoyoyopo5.ValueWrapper.Generator\Yoyoyopo5.ValueWrapper.Generator.csproj" />
-    <ProjectReference Include="..\..\src\Yoyoyopo5.ValueWrapper\Yoyoyopo5.ValueWrapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
